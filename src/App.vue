@@ -1,103 +1,105 @@
 <template lang="pug">
   #app
-    p Nombre
-    input(v-model="name")
-    br
-    br
-    p Apellidos
-    input(v-model="lastname")
-    br
-    p Nombre completo: {{ fullName }}
-    br
-    br
-    p Fecha de nacimiento
-    input(v-model="birthday", placeholder="aaaa-mm-dd")
-    br
-    p Edad: {{ Age }}
-    br
-    br
-    p Tarjeta de credito
-    input(v-model="creditcard")
-    button(v-on:click = "formattedCard") Formato
-    br
-    p {{ creditFormated }}
-    
+    section.section
+      nav.nav.has-shadow
+        .container
+          .field
+            label.label Título de la tarea
+              .control
+                input.input.is-large(type="text", 
+                                      placeholder="Título de la tarea" 
+                                      v-model="title")
+          .field
+            label.label Tiempo de trabajo
+              .control
+                input.input.is-large(type="text", 
+                                      placeholder="Tiempo trabajado" 
+                                      v-model="time")
+          .field.is-grouped.is-grouped-right
+            .control
+              a.button.is-info.is-large(@click="addTask") Agregar Tarea
+              a.button.is-danger.is-large(@click="deleteTask") &times; Eliminar Lista completa
+          br
+          br
+          h2 {{ timeWork }}
+          p 
+            small {{ numberTask }}
+          
+      .container
+        .ul
+          .li(v-for="(t, index) in tasks") {{ t.title }} - {{ t.time }}
+            a.button.is-danger(@click="deleteThisTask(index)") &times;
+        p.error 
+          small {{ mensajeError }}
 
 </template>
 
 <script>
+const tasks = []
 export default {
   name: 'app',
+  created(){
+    this.tasks = JSON.parse(localStorage.getItem(tasks)) || []
+  },
   data () {
     return {
-      msg: 'Hola Mundo!',
-      name: '',
-      lastname: '',
-      birthday: '',
-      creditcard: '',
-      creditFormated: ''
+      title: '',
+      time: '',
+      tasks: [],
+      mensajeError: '',
+      indexList: ''
     }
   },
-  computed: {
-    fullName(){
-      return  `${this.name} ${this.lastname}`
+  computed:{
+    numberTask(){
+      return `Tareas Pendientes: ${this.tasks.length}`
     },
-    Age(){
-      const moment = require('moment')
-      if(this.birthday.length === 10){
-        let fecha = moment(this.birthday)
-        let hoy = moment()
-        return `${hoy.diff(fecha, 'years')} años.`
-      }else{
-        return ''
+    timeWork(){
+      let horasTrabajadas = 0
+      for(let item of this.tasks){
+        horasTrabajadas += Number(item.time)
       }
+      return `Hasta el momento hemos trabajado ${horasTrabajadas} hrs.`
     }
-  },
-  watch:{
-
   },
   methods:{
-    formattedCard(){
-      let dividido = this.creditcard.match(/.{1,4}(.$)?/g)
-      this.creditFormated = dividido.join(' ')
+    addTask(){
+      if(this.title === '' || this.time === ''){
+        this.mensajeError = 'Debe indicar los dos elementos título y horario'
+      }else{
+        if (!/^([0-9])*$/.test(this.time)){
+          this.mensajeError = 'El tiempo debe ser un número'
+        }else{
+          this.tasks.push({title: this.title, time: this.time})
+          this.title = ''
+          this.time = ''
+          this.mensajeError = ''
+          localStorage.setItem(tasks, JSON.stringify(this.tasks))
+        }
+      }
+    },
+    deleteTask(){
+      this.tasks = []
+      localStorage.setItem(tasks, JSON.stringify(this.tasks))
+    },
+    deleteThisTask(index){
+      this.tasks.splice(index, 1)
+      localStorage.setItem(tasks, JSON.stringify(this.tasks))
     }
   }
 }
-/**
- * Los watchers (watch) sirven para desencadenar eventos cuando se está haciendo algo en el dom,
- * Algo así como ir buscando algo conforme se escribe en un input
- */
-
 </script>
 
 <style lang="scss">
   @import './scss/main.scss';
-  #app {
-    margin-top: 5%;
-    margin-left: 5%;
-    max-width: 420px;
+  .results {
+    margin-top: 15px;
   }
-  h1 {
-    color: #A3ECF3;
-    font-size: 20px;
+  .error {
+    color: red;
     font-weight: bolder;
-    text-align: center
   }
-  img {
-    margin:10px auto;
-		display:block;
-  }
-  .label{
-    color:#FF9300;
-    font-size: 11px;
-  }
-  .input{
-    border: none;
-    border-bottom: 1px solid #FF9300;
-    box-shadow: none !important;
-    color:#212121;
-  }
-  p{
-    margin: 15px 15px;
+  .button {
+    margin-right: 10px;
   }
 </style>

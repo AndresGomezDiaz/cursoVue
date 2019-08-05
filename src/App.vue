@@ -1,6 +1,8 @@
 <template lang="pug">
   #app
-    section.section
+    pm-header
+    pm-loader(v-show="isLoading")
+    section.section(v-show="!isLoading")
       nav.nav.has-shadow
         .container
           input.input.is-large(type="text", 
@@ -13,20 +15,32 @@
           small {{ searchMessage }}
           br
           br
-      .container
-        ul
-          li(v-for="t in tracks") {{ t.name }} - {{ t.artists[0].name }}
-
+      .container.results
+        .columns.is-multiline
+          .column.is-one-quarter(v-for="t in tracks")
+            pm-track(v-bind:track="t")
+    pm-footer
 </template>
 
 <script>
-import trackService from './services/track'
+import trackService from '@/services/track'
+/**
+ * Le agregamos Pm para indicar que es un componente, 
+ * normalmente los que tienen un prefijo significa que son componentes pertenecientes al proyecto.
+ * A todos los arhivos .vue se importan con todo y extensión.
+ */
+import PmFooter from '@/components/layout/Footer.vue' 
+import PmHeader from '@/components/layout/Header.vue'
+import PmTrack from '@/components/Track.vue'
+import PmLoader from '@/components/shared/Loader.vue'
+
 export default {
   name: 'app',
   data () {
     return {
       searchQuery: '',
-      tracks:[]
+      tracks:[],
+      isLoading: false
     }
   },
   computed:{
@@ -38,12 +52,21 @@ export default {
     search(){
       if(!this.searchQuery){ return }
 
+      this.isLoading = true
+
       trackService.search(this.searchQuery)
         .then(res => {
           console.log(res)
           this.tracks = res.tracks.items
+          this.isLoading = false
         })
     }
+  },
+  components:{ 
+    PmFooter, 
+    PmHeader,
+    PmTrack,
+    PmLoader
   }
 }
 </script>

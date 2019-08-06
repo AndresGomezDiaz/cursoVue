@@ -3,7 +3,7 @@
     pm-header
     pm-loader(v-show="isLoading")
     section.section(v-show="!isLoading")
-      nav.nav.has-shadow
+      nav.nav
         .container
           input.input.is-large(type="text", 
                                 placeholder="Buscar canciones" 
@@ -18,7 +18,10 @@
       .container.results
         .columns.is-multiline
           .column.is-one-quarter(v-for="t in tracks")
-            pm-track(v-bind:track="t")
+            pm-track(
+                  :class="{'is-active': t.id === selectedTrack }",
+                  :track="t", 
+                  @select="setSelectedTrack")
     pm-footer
 </template>
 
@@ -40,7 +43,8 @@ export default {
     return {
       searchQuery: '',
       tracks:[],
-      isLoading: false
+      isLoading: false,
+      selectedTrack: ''
     }
   },
   computed:{
@@ -60,14 +64,13 @@ export default {
           this.tracks = res.tracks.items
           this.isLoading = false
         })
+    },
+    setSelectedTrack(id){
+      console.log('Asignamos el id:', id)
+      this.selectedTrack = id
     }
   },
-  components:{ 
-    PmFooter, 
-    PmHeader,
-    PmTrack,
-    PmLoader
-  }
+  components:{ PmFooter, PmHeader, PmTrack, PmLoader }
 }
 </script>
 
@@ -75,5 +78,8 @@ export default {
   @import './scss/main.scss';
   .results {
     margin-top: 15px;
+  }
+  .is-active {
+    border: 3px #23d160 solid;
   }
 </style>

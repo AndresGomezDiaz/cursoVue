@@ -4,7 +4,7 @@
       .content.hast-text-center
         p Develop by @Dunkel
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
   .footer{
     text-align: center;
   }

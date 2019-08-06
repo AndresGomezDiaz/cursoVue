@@ -13,7 +13,7 @@
         ht.subtitle Canciones que están buenísimas
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .strong-header {
     color: white;
   }

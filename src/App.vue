@@ -2,8 +2,8 @@
   #app
     pm-header
 
-    pm-notification(v-show="showNotification")
-      p(slot="body") No se encontraron resultados
+    pm-notification(v-show="showNotification", :modalType='typeNotification')
+      p(slot="body") {{ messageNotification }}
     pm-loader(v-show="isLoading")
     section.section(v-show="!isLoading")
       nav.nav
@@ -49,7 +49,9 @@ export default {
       tracks:[],
       isLoading: false,
       selectedTrack: '',
-      showNotification: false
+      showNotification: false,
+      messageNotification: '',
+      typeNotification: ''
     }
   },
   computed:{
@@ -66,7 +68,14 @@ export default {
       trackService.search(this.searchQuery)
         .then(res => {
           console.log(res)
-          this.showNotification = res.tracks.total === 0
+          if(res.tracks.total === 0){
+            this.messageNotification = '¡No se encontraron resultados!'
+            this.typeNotification = 'is-danger'
+          }else{
+            this.messageNotification = `Se encontraron ${res.tracks.total} resultados`
+            this.typeNotification = 'is-success'
+          }
+          this.showNotification = true
           this.tracks = res.tracks.items
           this.isLoading = false
         })

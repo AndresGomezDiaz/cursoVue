@@ -33,7 +33,7 @@ export default {
 
 <style lang="scss" scoped>
   img {
-    width: 124px;
+    width: 150px;
     border-radius: 50%;
   }
 </style>

@@ -11,7 +11,15 @@
       .container.has-text-centered
         h1.title Platzi Music
         ht.subtitle Canciones que están buenísimas
+        pm-player
 </template>
+
+<script>
+import PmPlayer from '@/components/Player.vue'
+export default {
+  components:{ PmPlayer }
+}
+</script>
 
 <style lang="scss" scoped>
   .strong-header {

@@ -27,6 +27,7 @@
     methods:{
       selectTrack(){
         this.$emit('select', this.track.id) // emit se usa para enviar información del componente hijo al padre
+        this.$bus.$emit('set-track', this.track)
       }
     }
   }

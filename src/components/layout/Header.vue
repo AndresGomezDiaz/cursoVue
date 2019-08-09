@@ -5,12 +5,12 @@
         .container
           .nav-left
             .nav-item
-              strong.strong-header Platzi Music
+              strong.strong-header 📺 Platzi Music
           .nav-right.nav-menu
     .hero-body
       .container.has-text-centered
         h1.title Platzi Music
-        ht.subtitle Canciones que están buenísimas
+        h1.subtitle Canciones que están buenísimas
         pm-player
 </template>
 

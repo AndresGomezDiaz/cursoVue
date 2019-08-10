@@ -1,12 +1,19 @@
 <template lang="pug">
-  section.hero.is-success
+  section.hero.is-primary.is-medium
     .hero-head
-      header.nav
+      nav.navbar
         .container
-          .nav-left
-            .nav-item
+          .navbar-brand
+            .navbar-item
               strong.strong-header 📺 Platzi Music
-          .nav-right.nav-menu
+            span.navbar-burger.burger(data-target="navbarMenuPlatziMusic")
+              span
+              span
+              span
+          .navbar-menu#navbarMenuPlatziMusic
+            .navbar-end
+              router-link.navbar-item(to="/") Buscar
+              router-link.navbar-item(to="about") Nosotros
     .hero-body
       .container.has-text-centered
         h1.title Platzi Music

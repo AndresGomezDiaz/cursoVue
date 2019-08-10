@@ -1,5 +1,5 @@
 <template lang="pug">
-  .carg
+  .card(v-if="track && track.album")
     .card-image
       figure.image.is-1by1
         img(v-bind:src="track.album.images[0].url")
@@ -16,8 +16,10 @@
         small {{ track.duration_ms }}
         .nav.level
           .level-left
-            .a.level-item
+            a.level-item
               span.icon.is-small(@click= "selectTrack") ▶️
+            a.level-item
+              span.icon.is-small(@click="goToTrack(track.id)") 🎶
 </template>
 <script>
   export default {
@@ -28,6 +30,9 @@
       selectTrack(){
         this.$emit('select', this.track.id) // emit se usa para enviar información del componente hijo al padre
         this.$bus.$emit('set-track', this.track)
+      },
+      goToTrack(id){
+        this.$router.push({ name: 'track_detail', params: { id } })
       }
     }
   }

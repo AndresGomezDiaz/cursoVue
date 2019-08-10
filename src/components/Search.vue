@@ -10,8 +10,8 @@
           input.input.is-large(type="text", 
                                 placeholder="Buscar canciones" 
                                 v-model="searchQuery")
-          a.button.is-info.is-large(@click="search") Buscar
-          a.button.is-danger.is-large &times;
+          a.button.button-busqueda.is-info.is-large(@click="search", style="margin:10px;") Buscar
+          a.button.button-busqueda.is-danger.is-large(@click="cancelSearch", style="margin:10px;") &times; Reiniciar
       .container
         p 
           small {{ searchMessage }}
@@ -79,6 +79,10 @@ export default {
     setSelectedTrack(id){
       console.log('Asignamos el id:', id)
       this.selectedTrack = id
+    },
+    cancelSearch(){
+      this.tracks = []
+      this.searchQuery = ''
     }
   },
   components:{ PmTrack, PmLoader, PmNotification },
@@ -94,11 +98,14 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .results {
     margin-top: 15px;
   }
   .is-active {
     border: 3px #23d160 solid;
+  }
+  .button-busqueda {
+    margin:5px;
   }
 </style>

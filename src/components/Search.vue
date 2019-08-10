@@ -8,8 +8,9 @@
       nav.nav
         .container
           input.input.is-large(type="text", 
-                                placeholder="Buscar canciones" 
-                                v-model="searchQuery")
+                                placeholder="Buscar canciones", 
+                                v-model="searchQuery",
+                                @keyup.enter="search")
           a.button.button-busqueda.is-info.is-large(@click="search", style="margin:10px;") Buscar
           a.button.button-busqueda.is-danger.is-large(@click="cancelSearch", style="margin:10px;") &times; Reiniciar
       .container

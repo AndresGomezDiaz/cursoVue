@@ -11,6 +11,7 @@
                                 placeholder="Buscar canciones", 
                                 v-model="searchQuery",
                                 @keyup.enter="search")
+          //- Esto es un modificador para que cuando se presione enter se dispare el boton de buscar (@keyup.enter)
           a.button.button-busqueda.is-info.is-large(@click="search", style="margin:10px;") Buscar
           a.button.button-busqueda.is-danger.is-large(@click="cancelSearch", style="margin:10px;") &times; Reiniciar
       .container

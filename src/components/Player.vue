@@ -4,7 +4,7 @@
       img(:src="track.album.images[0].url")
     p
       strong {{ track.name }} 
-      small [{{ track.duration_ms }}]
+      small [{{ track.duration_ms | ms-to-mm }}]
     p(v-show="existPreview")
       audio(controls, :src="track.preview_url")
     p(v-show="!existPreview") Sin vista previa!

@@ -16,9 +16,9 @@
         small {{ track.duration_ms | ms-to-mm }}
         .nav.level
           .level-left
-            a.level-item
+            button.level-item.button.is-primary
               span.icon.is-small(@click= "selectTrack") ▶️
-            a.level-item
+            button.level-item.button.is-warning
               span.icon.is-small(@click="goToTrack(track.id)") 🎶
 </template>
 <script>
@@ -28,10 +28,12 @@
     },
     methods:{
       selectTrack(){
+        if(!this.track.preview_url){ return }
         this.$emit('select', this.track.id) // emit se usa para enviar información del componente hijo al padre
         this.$bus.$emit('set-track', this.track)
       },
       goToTrack(id){
+        if(!this.track.preview_url){ return }
         this.$router.push({ name: 'track_detail', params: { id } })
       }
     }

@@ -39,6 +39,7 @@ import trackService from '@/services/track'
 import PmTrack from '@/components/Track.vue'
 import PmLoader from '@/components/shared/Loader.vue'
 import PmNotification from '@/components/shared/Notification.vue'
+import trackMixin from '@/mixins/track'
 
 export default {
   name: 'app',
@@ -58,6 +59,7 @@ export default {
       return `Encontrados: ${this.tracks.length}`
     }
   },
+  mixins: [trackMixin],
   methods:{
     search(){
       if(!this.searchQuery){ return }
@@ -66,7 +68,6 @@ export default {
 
       trackService.search(this.searchQuery)
         .then(res => {
-          console.log(res)
           if(res.tracks.total === 0){
             this.messageNotification = '¡No se encontraron resultados!'
             this.typeNotification = 'is-danger'
@@ -80,7 +81,6 @@ export default {
         })
     },
     setSelectedTrack(id){
-      console.log('Asignamos el id:', id)
       this.selectedTrack = id
     },
     cancelSearch(){

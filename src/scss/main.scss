@@ -3,3 +3,12 @@
 body{
   font-family: 'Monserrat', sans-serif;
 }
+// move es el nombre y enter-avtive es el proceso de vue
+.move-enter-active, .move-leave-active {
+  transform: translateX(0);
+  transition: all .3s linear;
+}
+
+.move-enter, .move-leave-to {
+  transform:translateX(100%);
+}

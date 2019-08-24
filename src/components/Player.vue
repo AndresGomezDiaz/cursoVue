@@ -11,23 +11,31 @@
       
 </template>
 <script>
+import { mapState } from 'vuex'
 export default {
+  computed:{
+    ...mapState(['track'])
+  },
+
+
+
   data(){
     return {
-      track:{},
+      // track:{},
       existPreview: true
     }
   },
-  created(){
-    this.$bus.$on('set-track', (track) => {
-      this.track = track
-      if(track.preview_url === null){
-        this.existPreview = false
-      }else{
-        this.existPreview = true
-      }
-    })
-  }
+
+  // created(){
+  //   this.$bus.$on('set-track', (track) => {
+  //     this.track = track
+  //     if(track.preview_url === null){
+  //       this.existPreview = false
+  //     }else{
+  //       this.existPreview = true
+  //     }
+  //   })
+  // }
 }
 </script>
 

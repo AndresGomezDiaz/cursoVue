@@ -15,7 +15,7 @@
       .column.is-8(v-if="track && track.album")
         .panel
           .panel-heading
-            h1.title {{ track.name }}
+            h1.title {{ trackTitle }}
           .panel-block
             article.media
               .media-content
@@ -30,37 +30,52 @@
 </template>
 
 <script>
-import trackService from '@/services/track'
 import PmLoader from '@/components/shared/Loader.vue'
 import PmNotification from '@/components/shared/Notification.vue'
 import trackMixin from '@/mixins/track'
+import { mapState, mapActions, mapGetters } from 'vuex'
 
 export default {
   data(){
     return {
-      track: {},
+      // track: {},
       isLoading: false,
       showNotification: false,
       messageNotification: '',
       typeNotification: ''
     }
   },
+  computed:{
+    ...mapState(['track']),
+    ...mapGetters(['trackTitle'])
+  },
+
   mixins: [ trackMixin ],
   components:{ PmLoader, PmNotification },
   created () {
     this.isLoading = true
     const id = this.$route.params.id
-    trackService.getById(id)
-      .then(res => {
-        this.isLoading = false
-        this.track = res
-      })
-      .catch(err => {
-        this.isLoading = false
-        this.showNotification = true
-        this.messageNotification = '¡No se encontraron resultados!'
-        this.typeNotification = 'is-danger'
-      })
+
+    if(!this.track || !this.track.id || this.track.id !== id){
+      this.getTrackById({ id })
+        .then(() =>{
+          this.isLoading = false
+          this.track = res
+          console.log('Track loaded.... ')
+        })
+        .catch(err => {
+          this.isLoading = false
+          if(!this.track || !this.track.id){
+            this.showNotification = true
+            this.messageNotification = '¡No se encontraron resultados!'
+            this.typeNotification = 'is-danger'
+          }
+          
+        })
+    }
+  },
+  methods:{
+    ...mapActions(['getTrackById'])
   }
 }
 </script>
